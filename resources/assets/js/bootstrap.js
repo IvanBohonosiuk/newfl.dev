@@ -45,23 +45,20 @@ Vue.http.interceptors.push((request, next) => {
  * allows your team to easily build robust real-time web applications.
  */
 
-import Echo from "laravel-echo"
-
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: 'f30c876eff6f4e224697',
-    cluster: 'eu',
-});
+// import Echo from "laravel-echo"
+//
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: 'f30c876eff6f4e224697',
+//     cluster: 'eu',
+// });
 
 import Pusher from 'pusher-js';
 
-var pusher = new Pusher("f30c876eff6f4e224697", {
-    cluster: 'eu'
-});
 
-window.settings = function() {
-    config = 'http://127.0.0.1:6378';
-};
+// window.settings = function() {
+//     config = 'http://127.0.0.1:6378';
+// };
 
 // window.Pusher = require('./components/pusher');
 // Pusher._init(window.settings.config.broadcast.host);

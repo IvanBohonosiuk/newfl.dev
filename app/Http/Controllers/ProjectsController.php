@@ -165,12 +165,8 @@ class ProjectsController extends Controller
         $act_project->save();
 
         $pusher = new \Pusher(config('broadcasting.connections.pusher.key'), config('broadcasting.connections.pusher.secret'), config('broadcasting.connections.pusher.app_id'), config('broadcasting.connections.pusher.options'));
-
-        /* Your data that you would like to send to Pusher */
         $data = ['project' => $act_project, 'user' => $act_project->user];
-
-        /* Sending the data to channel: "test_channel" with "my_event" event */
-        $pusher->trigger( 'chat-room.1', 'NewProject', $data);
+        $pusher->trigger( 'project', 'NewProject', $data);
 
 //        event(new NewProject($act_project, $act_project->user));
 
