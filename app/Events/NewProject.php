@@ -88,13 +88,4 @@ class NewProject implements ShouldBroadcast
         return $this->user;
     }
 
-    /**
-     * @return array
-     */
-//    public function freelancers()
-//    {
-////        if ($this->user()->hasRole('Freelancer')) {
-//            return $this->user->name;
-////        }
-//    }
 }

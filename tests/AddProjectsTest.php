@@ -1,12 +1,18 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: John
- * Date: 22.11.2016
- * Time: 21:52
- */
-class AddProjectsTest extends PHPUnit_Framework_TestCase
-{
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+class AddProjectsTest extends TestCase
+{
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testExample()
+    {
+        $this->assertTrue(true);
+    }
 }

@@ -19,10 +19,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function()
     CRUD::resource('project_cats', 'Admin\ProjectCatsCrudController');
     CRUD::resource('users_cats', 'Admin\UserCatsCrudController');
     CRUD::resource('bids', 'Admin\BidsCrudController');
-    Route::get('projects/{id}/active', [
-        'uses' => 'ProjectsController@activateProject',
-        'as' => 'projects.activate'
-    ]);
+    Route::get('projects/{id}/active', ['uses' => 'ProjectsController@activateProject', 'as' => 'projects.activate']);
 });
 
 Route::get('language','AppController@language');
@@ -127,29 +124,17 @@ Route::get('users/category/{slug}', [
     'as' => 'user.cat'
 ]);
 
-Route::get('/test', function() {
-
-//    event(new \App\Events\ChatMessageWasReceived('Project message', \Illuminate\Support\Facades\Auth::user()->id));
-
-    /* New Pusher instance with our config data */
-    $pusher = new \Pusher(config('broadcasting.connections.pusher.key'), config('broadcasting.connections.pusher.secret'), config('broadcasting.connections.pusher.app_id'), config('broadcasting.connections.pusher.options'));
-
-    /* Enable pusher logging - I used an anonymous class and the Monolog */
-//    $pusher->set_logger(new class {
-//        public function log($msg)
-//        {
-//            \Log::info($msg);
-//        }
-//    });
-
-    /* Your data that you would like to send to Pusher */
-    $data = ['project' => 'project from Laravel 5.3', 'user' => Auth::user()];
-
-    /* Sending the data to channel: "test_channel" with "my_event" event */
-    $pusher->trigger( 'chat-room.1', '\App\Events\NewProject', $data);
-
-//    return 'ok';
-
-
-    return view('home');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('notifications', [
+        'as' => 'notifications.recent',
+        'uses' => 'NotificationsController@recent'
+    ]);
+    Route::get('notification/{id}', [
+        'as' => 'notifications.get',
+        'uses' => 'NotificationsController@get'
+    ]);
+    Route::put('notifications/read', [
+        'as' => 'notifications.read',
+        'uses' => 'NotificationsController@markAsRead'
+    ]);
 });

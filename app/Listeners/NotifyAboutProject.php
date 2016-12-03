@@ -29,19 +29,8 @@ class NotifyAboutProject
      */
     public function handle(NewProject $event)
     {
-//        $freelancers = $event->freelancers();
+        $author = $event->user();
 
-
-//        $pusher = new \Pusher(config('broadcasting.connections.pusher.key'), config('broadcasting.connections.pusher.secret'), config('broadcasting.connections.pusher.app_id'), config('broadcasting.connections.pusher.options'));
-//
-//        /* Your data that you would like to send to Pusher */
-//        $data = ['project' => $event->project(), 'user' => $event->user()];
-//
-//        /* Sending the data to channel: "test_channel" with "my_event" event */
-//        $pusher->trigger( 'chat-room.1', $event, $data);
-
-        \Notification::send(Auth::user(), new AddProjects($event->project(), $event->user()));
-
-//        $author->notify(new AddProjects($event->project(), $event->user()));
+        $author->notify(new AddProjects($event->project(), $event->user()));
     }
 }

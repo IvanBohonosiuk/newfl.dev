@@ -4,7 +4,7 @@ var io = require('socket.io')(http);
 var Redis = require('ioredis');
 var redis = new Redis(6379, '127.0.0.1');
 
-redis.psubscribe('project', function(err, count) {
+redis.psubscribe('*', function(err, count) {
 
 });
 

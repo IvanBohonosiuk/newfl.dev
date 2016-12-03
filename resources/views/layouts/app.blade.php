@@ -8,13 +8,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{--<title>{{ config('app.name', 'Laravel') }}</title>--}}
     <title>@yield('title')</title>
 
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Styles -->
-    {{--<link href="/css/app.css" rel="stylesheet">--}}
     <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
     @yield('styles')
 
@@ -34,30 +32,32 @@
                     {{ config('app.name', 'Laravel NewFL') }}
                 </a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    {{--@if(Auth::user())--}}
-                        {{--<ul id="slide-out" class="side-nav">--}}
+                    @if(Auth::user())
+                        <ul id="slide-out" class="side-nav">
 
-                            {{--@foreach (Auth::user()->unreadNotifications as $notification)--}}
-                                {{--<li>--}}
-                                    {{--<a href="{{ route('projects.show', $notification->data['project']['id']) }}">--}}
-                                        {{--{{  $notification->data['project']['title'] }}--}}
-                                    {{--</a>--}}
-                                    {{--<a href="#!">--}}
-                                        {{--<i class="material-icons">cloud</i>--}}
-                                        {{--First Link With Icon--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                            {{--@endforeach--}}
-                        {{--</ul>--}}
-                        {{--<li>--}}
+
+                            @foreach (Auth::user()->unreadNotifications as $notification)
+                                <li>
+                                    <a href="{{ route('projects.show', $notification->data['project']['id']) }}">
+                                        <i class="material-icons {{ $notification->data['color_icon'] }}">{{ $notification->data['icon'] }}</i>
+                                        <span>{{  $notification->data['project']['title'] }}</span> <img class="responsive-img circle" style="width: 25px; position: relative; top: 10px;" src="/uploads/avatars/{{ $notification->data['author']['image'] }}"> <small>{{ $notification->data['author']['name'] }}</small>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <li>
+                            <a class="button-notifications item notification-item" data-activates="slide-out" @click="showNotifications">
+                                <i class="material-icons">today</i>
+                                <span class="badge notify red white-text circle" v-if="hasUnreadNotifications">@{{ countUnreadNotifications }}</span>
+                            </a>
                             {{--<a href="#" data-activates="slide-out" class="button-notifications">--}}
                                 {{--<i class="material-icons">today</i>--}}
                                 {{--@if(Auth::user()->unreadNotifications())--}}
                                     {{--<span class="badge notify red white-text circle">{{ count(Auth::user()->unreadNotifications()) }}</span>--}}
                                 {{--@endif--}}
                             {{--</a>--}}
-                        {{--</li>--}}
-                    {{--@endif--}}
+                        </li>
+                    @endif
                     {{--<!-- Dropdown Trigger -->--}}
                     <li>
                         <a class='dropdown-button btn-floating btn waves-effect blue' href='#' data-activates='dropdown2'>
@@ -160,15 +160,18 @@
 
 <!-- Scripts -->
 {{--<script src="/js/app.js"></script>--}}
+<script type="text/javascript">
+    var user = {!! Auth::user() !!}
+</script>
 <script src="{{ elixir('js/app.js') }}"></script>
 
-<script type="text/javascript">
-    jQuery(document).ready(function($) {
-        $(".button-notifications").sideNav({
-            edge: 'right'
-        });
-    });
-</script>
+{{--<script type="text/javascript">--}}
+    {{--jQuery(document).ready(function($) {--}}
+        {{--$(".button-notifications").sideNav({--}}
+            {{--edge: 'right'--}}
+        {{--});--}}
+    {{--});--}}
+{{--</script>--}}
 
 @yield('scripts')
 </body>

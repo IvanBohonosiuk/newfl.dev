@@ -9,9 +9,7 @@
 
                 <div class="panel-body">
                     You are logged in! <p>@lang('auth.failed')</p>
-                    <div id="app1">
-                        @{{ message }}
-                    </div>
+
                 </div>
             </div>
         </div>

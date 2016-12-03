@@ -13,22 +13,49 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 
-var pusher = new Pusher("f30c876eff6f4e224697", {
-    cluster: 'eu'
-});
-
-var channel = pusher.subscribe('project');
-
-channel.bind('NewProject', function (data) {
-    console.log(data.project.title);
-});
+// var pusher = new Pusher("f30c876eff6f4e224697", {
+//     cluster: 'eu'
+// });
+//
+// var channel = pusher.subscribe('project');
+//
+// channel.bind('NewProject', function (data) {
+//     console.log(data.project.title);
+// });
 
 Vue.component('example', require('./components/Example.vue'));
 
 const app = new Vue({
     el: '#app',
-    data: {
-        message: "Hello Vue!"
+    data() {
+        return {
+            notifications: []
+        }
+    },
+    methods: {
+        showNotifications () {
+            $(".button-notifications").sideNav({
+                edge: 'right'
+            });
+        },
+
+
+    },
+    computed: {
+        hasUnreadNotifications() {
+            if (_.size(this.notifications) > 0) {
+                return _.size(
+                    _.filter(this.notifications, notification => {
+                        return !notification.read
+                    })
+                )
+            }
+
+            return 0;
+        },
+        countUnreadNotifications() {
+            return _.size(this.hasUnreadNotifications);
+        },
     }
 });
 

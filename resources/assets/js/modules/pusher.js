@@ -10,7 +10,7 @@ module.exports = {
             this.io = io(this.host);
         }
     },
-    on (chanel, event,callback) {
+    on (chanel, event, callback) {
         if(!_.isObject(this.io)) {
             return this;
         }

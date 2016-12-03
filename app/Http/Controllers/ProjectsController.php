@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Events\NewProject;
-use App\Models\Bids;
 use App\Models\ProjectCats;
 use App\Notifications\AddProjects;
+use App\Notifications\NotifyAdminsAboutNewProject;
 use App\User;
 use Illuminate\Http\Request;
 use App\Models\Projects;
-use Illuminate\Support\Facades\Notification;
 
 
 class ProjectsController extends Controller
 {
     /**
+     *
+     * View list active project
+     *
      * @param Projects $projects
      * @param ProjectCats $cats
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -24,12 +26,13 @@ class ProjectsController extends Controller
         $this->data['projects'] = $projects->getActive();
         $this->data['cats'] = $cats->getActive();
 
-//        \Auth::user()->notify(new AddProjects());
-
         return view('projects.index', $this->data);
     }
 
     /**
+     *
+     * view project by id
+     *
      * @param $id
      * @param Projects $project
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -43,6 +46,9 @@ class ProjectsController extends Controller
     }
 
     /**
+     *
+     * view create new project form
+     *
      * @param ProjectCats $cats
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -54,10 +60,13 @@ class ProjectsController extends Controller
     }
 
     /**
+     *
+     * create - save new project
+     *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function createSave(Request $request, User $users)
+    public function createSave(Request $request)
     {
         $this->validate($request, [
             'title' => 'required',
@@ -78,7 +87,7 @@ class ProjectsController extends Controller
 
         $project->user_id = $request['user_id'];
 
-        $message = $request->user()->projects()->save($project) ? 'Проект опубликован успешно!' : 'Произошла ошыбка!';
+        $message = $request->user()->projects()->save($project) ? 'Проект отправлен на модерацию успешно!' : 'Произошла ошыбка!';
 
         $cats_id = $request['cat_ids'];
 
@@ -86,10 +95,23 @@ class ProjectsController extends Controller
             $project->categories()->attach($cat_id);
         endforeach;
 
+        // find all users
+//        $users = User::all();
+//
+//        foreach ($users as $user) :
+//            if ($user->hasRole('admin')) :
+//                // send notification to all admins
+//                $user->notify(new NotifyAdminsAboutNewProject($project));
+//            endif;
+//        endforeach;
+
         return redirect()->back()->with(['message' => $message]);
     }
 
     /**
+     *
+     * select freelancer to work a project
+     *
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
@@ -106,6 +128,9 @@ class ProjectsController extends Controller
     }
 
     /**
+     *
+     * project complete successful
+     *
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
@@ -122,6 +147,9 @@ class ProjectsController extends Controller
     }
 
     /**
+     *
+     * cancel selected freelancer, project not complete
+     *
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
@@ -138,6 +166,9 @@ class ProjectsController extends Controller
     }
 
     /**
+     *
+     * get category by slug and all project into category
+     *
      * @param $slug
      * @param ProjectCats $cat
      * @param Projects $projects
@@ -153,6 +184,9 @@ class ProjectsController extends Controller
     }
 
     /**
+     *
+     * activate project in admin panel
+     *
      * @param $id
      * @param Projects $project
      * @return \Illuminate\Http\RedirectResponse
@@ -164,13 +198,30 @@ class ProjectsController extends Controller
         $act_project->active = 1;
         $act_project->save();
 
-        $pusher = new \Pusher(config('broadcasting.connections.pusher.key'), config('broadcasting.connections.pusher.secret'), config('broadcasting.connections.pusher.app_id'), config('broadcasting.connections.pusher.options'));
-        $data = ['project' => $act_project, 'user' => $act_project->user];
-        $pusher->trigger( 'project', 'NewProject', $data);
+        // send notification on pusher.com
+        // $pusher = new \Pusher(
+        //     config('broadcasting.connections.pusher.key'),
+        //     config('broadcasting.connections.pusher.secret'),
+        //     config('broadcasting.connections.pusher.app_id'),
+        //     config('broadcasting.connections.pusher.options')
+        // );
+        // set project data
+        // $data = ['project' => $act_project, 'user' => $act_project->user];
+        // $pusher->trigger( 'project', 'NewProject', $data);
 
+
+        // send event to project author
 //        event(new NewProject($act_project, $act_project->user));
 
-//            $user->notify(new AddProjects($act_project, $act_project->user));
+        // find all users
+//        $users = User::all();
+//
+//        foreach ($users as $user) :
+//            if ($user->hasRole('Freelancer')) :
+//                // send notification to all freelancers
+//                $user->notify(new AddProjects($act_project, $act_project->user));
+//            endif;
+//        endforeach;
 
         return redirect()->back();
     }

@@ -172,7 +172,7 @@ return [
         // exceptions
         GrahamCampbell\Exceptions\ExceptionsServiceProvider::class,
         // debug
-//        Barryvdh\Debugbar\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
         // IDE helper
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         // Backpack Service Providers
@@ -189,12 +189,12 @@ return [
         // Logs
         Backpack\LogManager\LogManagerServiceProvider::class,
         // settings
-        Backpack\Settings\SettingsServiceProvider::class,
+//        Backpack\Settings\SettingsServiceProvider::class,
         // menu
-        Backpack\MenuCRUD\MenuCRUDServiceProvider::class,
+//        Backpack\MenuCRUD\MenuCRUDServiceProvider::class,
         // pages
-        Cviebrock\EloquentSluggable\ServiceProvider::class,
-        Backpack\PageManager\PageManagerServiceProvider::class,
+//        Cviebrock\EloquentSluggable\ServiceProvider::class,
+//        Backpack\PageManager\PageManagerServiceProvider::class,
         // permission
         Backpack\PermissionManager\PermissionManagerServiceProvider::class,
         // avatar uploads
@@ -209,7 +209,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        App\Providers\BroadcastServiceProvider::class,
+//        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 

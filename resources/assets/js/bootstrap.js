@@ -11,7 +11,7 @@ window._ = require('lodash');
 
 window.$ = window.jQuery = require('jquery');
 // require('bootstrap-sass');
-require('./materialize.min');
+var materialize = require('./materialize.min');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -53,13 +53,31 @@ Vue.http.interceptors.push((request, next) => {
 //     cluster: 'eu',
 // });
 
-import Pusher from 'pusher-js';
+// import Pusher from 'pusher-js';
 
+window.User = require('./modules/user');
+User.init(user);
 
-// window.settings = function() {
-//     config = 'http://127.0.0.1:6378';
-// };
+window.settings = function() {
+    config = 'http://127.0.0.1:6378';
+};
 
-// window.Pusher = require('./components/pusher');
+window.Pusher = require('./modules/pusher');
 // Pusher._init(window.settings.config.broadcast.host);
-// Pusher._init(window.settings.config);
+Pusher._init(window.settings.config);
+
+// var pusher = new Pusher("f30c876eff6f4e224697", {
+//     cluster: 'eu'
+// });
+
+//
+// if (User.isLoggedIn()) {
+//
+//     pusher.subscribe('App.User.' + User.getId(), function(message) {
+//         console.log(message)
+//     });
+// }
+
+Pusher.on('private-App.User.' + User.getId(), function(channel, message) {
+        console.log(channel, message);
+});

@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\SendChatMessage::class,
+        Commands\FacadeMakeCommand::class,
+        Commands\ContractMakeCommand::class,
+        Commands\SetModelRootNamespace::class,
     ];
 
     /**
